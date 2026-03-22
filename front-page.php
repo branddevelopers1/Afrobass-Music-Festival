@@ -1,207 +1,136 @@
 <?php get_header(); ?>
 
 <?php
-$hero_video  = fest_setting('fest_hero_video') ? get_field('fest_hero_video', 'option') : null;
-$ticket_url  = fest_setting('fest_ticket_url') ?: home_url('/tickets');
+$ticket_url = fest_setting('fest_ticket_url') ?: '#notify';
 ?>
 
-<!-- ═══ HERO COVER ═══ -->
-<section class="fest-cover" id="home">
-  <div class="fest-cover-video-wrap">
-    <?php if (!empty($hero_video['url'])): ?>
-      <video class="fest-cover-video" autoplay muted loop playsinline>
-        <source src="<?php echo esc_url($hero_video['url']); ?>" type="video/mp4">
-      </video>
-    <?php else: ?>
-      <div class="fest-cover-fallback"></div>
-    <?php endif; ?>
-    <div class="fest-cover-grain"></div>
-  </div>
-  <div class="fest-cover-overlay"></div>
+<!-- BG ATMOSPHERE -->
+<div class="fbg-layer" aria-hidden="true">
+  <div class="fbg-glow-1"></div>
+  <div class="fbg-glow-2"></div>
+  <div class="fbg-glow-3"></div>
+  <div class="fbg-grain"></div>
+</div>
+<div class="fbg-lines" aria-hidden="true"></div>
 
-  <div class="fest-cover-content">
-    <div class="fest-cover-edition">First Edition · Toronto, Canada</div>
-    <h1 class="fest-cover-h1">
-      AFROBASS
-      <em>MUSIC<br>FESTIVAL</em>
+<!-- HERO -->
+<section class="fhero" id="home">
+
+  <!-- Floating ghost words -->
+  <div class="fghost fg-1" aria-hidden="true">AFROBEATS</div>
+  <div class="fghost fg-2" aria-hidden="true">AMAPIANO</div>
+  <div class="fghost fg-3" aria-hidden="true">TORONTO</div>
+
+  <!-- Rotating ring -->
+  <svg class="fring" viewBox="0 0 500 500" aria-hidden="true">
+    <defs>
+      <path id="fcp" d="M 250 250 m -200 0 a 200 200 0 1 1 400 0 a 200 200 0 1 1 -400 0"/>
+    </defs>
+    <text fill="rgba(255,255,255,0.5)" font-family="'Space Grotesk',sans-serif" font-size="13" font-weight="500" letter-spacing="8">
+      <textPath href="#fcp">
+        AFROBASS MUSIC FESTIVAL · TORONTO 2026 · AUGUST 15 · REBEL ENTERTAINMENT COMPLEX · AFROBEATS · AMAPIANO · AFRO-CARIBBEAN ·
+      </textPath>
+    </text>
+  </svg>
+
+  <div class="fhero-content">
+    <div class="feyebrow">First Edition · Toronto, Canada</div>
+
+    <h1 class="fh1">
+      <span class="fh1-1">AFROBASS</span>
+      <span class="fh1-2">MUSIC</span>
+      <span class="fh1-3">FESTIVAL</span>
     </h1>
-    <div class="fest-cover-meta">
-      <div class="fest-cover-meta-item"><strong>August 15</strong>, 2026</div>
-      <div class="fest-cover-meta-item">Toronto, Canada</div>
-      <div class="fest-cover-meta-item">Rebel Entertainment Complex</div>
-      <div class="fest-cover-meta-item">1,500+ Attendees</div>
+
+    <div class="fmeta">
+      <div class="fpill"><div class="fpill-dot" style="background:#FF6B1A;"></div><span>August 15, 2026</span></div>
+      <div class="fpill"><div class="fpill-dot" style="background:#FF2D8A;"></div><span>Toronto, Canada</span></div>
+      <div class="fpill"><div class="fpill-dot" style="background:#FFD23F;"></div><span>Rebel Entertainment Complex</span></div>
+      <div class="fpill"><div class="fpill-dot" style="background:#6B2FBF;"></div><span>1,500+ Attendees</span></div>
     </div>
-    <div class="fest-cover-actions">
-      <a href="<?php echo esc_url($ticket_url); ?>" class="fest-btn-primary">Get Tickets →</a>
-      <button class="fest-btn-ghost" onclick="document.getElementById('notify').scrollIntoView({behavior:'smooth'})">
-        <div class="arrow-ring">↓</div>
-        Stay Updated
+
+    <div class="factions">
+      <button class="fbtn-main" onclick="document.getElementById('notify').scrollIntoView({behavior:'smooth'})">
+        Get Notified →
+      </button>
+      <button class="fbtn-ghost" onclick="document.getElementById('notify').scrollIntoView({behavior:'smooth'})">
+        Early Access
       </button>
     </div>
   </div>
 
-  <div class="fest-scroll-ind" aria-hidden="true">
-    <div class="fest-scroll-line"></div>
-    <span class="fest-scroll-text">Scroll</span>
+  <div class="fscroll-ind" aria-hidden="true">
+    <div class="fscroll-line"></div>
+    <span class="fscroll-txt">Scroll</span>
   </div>
 </section>
 
-<!-- ═══ TICKER ═══ -->
-<div class="fest-ticker" aria-hidden="true">
-  <div class="fest-ticker-track">
-    <?php for ($i = 0; $i < 2; $i++): ?>
-    <div class="fest-ticker-item">
-      Afrobeats <span class="fest-ticker-sep">✦</span>
-      Amapiano <span class="fest-ticker-sep">✦</span>
-      Afro-Caribbean <span class="fest-ticker-sep">✦</span>
-      Toronto 2026 <span class="fest-ticker-sep">✦</span>
-      August 15 <span class="fest-ticker-sep">✦</span>
-      Rebel Entertainment Complex <span class="fest-ticker-sep">✦</span>
-      1,500+ Attendees <span class="fest-ticker-sep">✦</span>
-      First Edition <span class="fest-ticker-sep">✦</span>
-      International Artists <span class="fest-ticker-sep">✦</span>
-    </div>
+<!-- TICKER -->
+<div class="fticker" aria-hidden="true">
+  <div class="fticker-track">
+    <?php for($i=0;$i<2;$i++): ?>
+    <div class="fti hot">Afrobeats <div class="ftdot"></div></div>
+    <div class="fti">Amapiano <div class="ftdot"></div></div>
+    <div class="fti hot">Afro-Caribbean <div class="ftdot"></div></div>
+    <div class="fti">Toronto 2026 <div class="ftdot"></div></div>
+    <div class="fti hot">August 15 <div class="ftdot"></div></div>
+    <div class="fti">Rebel Entertainment Complex <div class="ftdot"></div></div>
+    <div class="fti hot">1,500+ Attendees <div class="ftdot"></div></div>
+    <div class="fti">First Edition <div class="ftdot"></div></div>
+    <div class="fti hot">International Artists <div class="ftdot"></div></div>
+    <div class="fti">Live DJs <div class="ftdot"></div></div>
     <?php endfor; ?>
   </div>
 </div>
 
-<!-- ═══ COUNTDOWN ═══ -->
-<div class="fest-countdown-section fest-reveal">
-  <div class="fest-countdown-label">Counting Down to August 15, 2026</div>
-  <div class="fest-countdown-grid">
-    <div class="fest-cd-block">
-      <span class="fest-cd-num" id="cd-days">--</span>
-      <span class="fest-cd-lbl">Days</span>
-    </div>
-    <div class="fest-cd-block">
-      <span class="fest-cd-num" id="cd-hours">--</span>
-      <span class="fest-cd-lbl">Hours</span>
-    </div>
-    <div class="fest-cd-block">
-      <span class="fest-cd-num" id="cd-mins">--</span>
-      <span class="fest-cd-lbl">Minutes</span>
-    </div>
-    <div class="fest-cd-block">
-      <span class="fest-cd-num" id="cd-secs">--</span>
-      <span class="fest-cd-lbl">Seconds</span>
-    </div>
+<!-- COUNTDOWN -->
+<div class="fcount-section">
+  <div class="fcount-label">Counting Down to August 15, 2026</div>
+  <div class="fcount-grid">
+    <div class="fcd-block"><span class="fcd-num" id="cd-days">--</span><span class="fcd-lbl">Days</span></div>
+    <div class="fcd-block"><span class="fcd-num" id="cd-hours">--</span><span class="fcd-lbl">Hours</span></div>
+    <div class="fcd-block"><span class="fcd-num" id="cd-mins">--</span><span class="fcd-lbl">Minutes</span></div>
+    <div class="fcd-block"><span class="fcd-num" id="cd-secs">--</span><span class="fcd-lbl">Seconds</span></div>
   </div>
 </div>
 
-<!-- ═══ LINEUP TEASER ═══ -->
-<?php
-$artists = new WP_Query([
-  'post_type'      => 'fest_artist',
-  'posts_per_page' => 3,
-  'meta_key'       => 'fest_artist_order',
-  'orderby'        => 'meta_value_num',
-  'order'          => 'ASC',
-]);
-?>
-<?php if ($artists->have_posts()): ?>
-<section style="padding:100px 56px;border-top:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a;">
-  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;" class="fest-reveal">
-    <div>
-      <div class="fest-kicker">Who's Playing</div>
-      <div class="fest-title">The Lineup</div>
+<!-- EMAIL CAPTURE -->
+<div class="fcapture" id="notify">
+  <div class="fcap-left">
+    <div class="fcap-tag">
+      <div class="fcap-tag-dot"></div>
+      <span>Limited Early Access</span>
     </div>
-    <a href="<?php echo esc_url(home_url('/lineup')); ?>" class="fest-view-all">Full Lineup <span class="arr">→</span></a>
+    <div class="fcap-title">Be First<br>to Know.<br><em>Drop Incoming.</em></div>
+    <p class="fcap-desc">Lineup announcements. Presale tickets. Exclusive updates. All dropping before the public knows anything.</p>
   </div>
-  <div class="fest-artists-grid">
-    <?php while ($artists->have_posts()): $artists->the_post();
-      $role     = get_field('fest_artist_role')   ?: 'Headliner';
-      $origin   = get_field('fest_artist_origin') ?: '';
-      $tba      = get_field('fest_artist_tba');
-    ?>
-      <div class="fest-artist-card fest-reveal">
-        <div class="fest-artist-img-wrap">
-          <?php if ($tba): ?>
-            <div class="fest-artist-img-placeholder">
-              <svg viewBox="0 0 80 80" fill="none" style="width:64px;height:64px;color:#1a1a1a;"><circle cx="40" cy="30" r="16" stroke="currentColor" stroke-width="1.5"/><path d="M8 72c0-17.7 14.3-32 32-32s32 14.3 32 32" stroke="currentColor" stroke-width="1.5"/></svg>
-            </div>
-          <?php elseif (has_post_thumbnail()): ?>
-            <?php the_post_thumbnail('fest-artist', ['class'=>'fest-artist-img']); ?>
-          <?php else: ?>
-            <div class="fest-artist-img-placeholder">
-              <svg viewBox="0 0 80 80" fill="none" style="width:64px;height:64px;color:#1a1a1a;"><circle cx="40" cy="30" r="16" stroke="currentColor" stroke-width="1.5"/><path d="M8 72c0-17.7 14.3-32 32-32s32 14.3 32 32" stroke="currentColor" stroke-width="1.5"/></svg>
-            </div>
-          <?php endif; ?>
-          <span class="fest-artist-role-badge"><?php echo esc_html($role); ?></span>
-          <div class="fest-artist-overlay"></div>
+
+  <div class="fcap-right">
+    <form id="fest-capture-form" novalidate>
+      <div class="fform-row">
+        <div class="fform-field">
+          <input type="text" name="first_name" id="ffn" placeholder=" ">
+          <label for="ffn">First Name</label>
         </div>
-        <div class="fest-artist-info">
-          <div class="fest-artist-name"><?php echo $tba ? 'TBA' : get_the_title(); ?></div>
-          <?php if ($origin && !$tba): ?>
-            <div class="fest-artist-origin"><?php echo esc_html($origin); ?></div>
-          <?php endif; ?>
+        <div class="fform-field">
+          <input type="text" name="last_name" id="fln" placeholder=" ">
+          <label for="fln">Last Name</label>
         </div>
       </div>
-    <?php endwhile; wp_reset_postdata(); ?>
-  </div>
-</section>
-<?php endif; ?>
-
-<!-- ═══ FESTIVAL INFO ═══ -->
-<section style="padding:100px 56px;border-bottom:1px solid #1a1a1a;background:#060606;">
-  <div class="fest-reveal" style="margin-bottom:56px;">
-    <div class="fest-kicker">The Details</div>
-    <div class="fest-title">Festival Info</div>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#1a1a1a;" class="fest-reveal">
-    <?php
-    $info = [
-      ['Date',      'Saturday, August 15, 2026'],
-      ['Venue',     'Rebel Entertainment Complex'],
-      ['City',      'Toronto, Canada'],
-      ['Capacity',  '1,500+ Attendees'],
-    ];
-    foreach ($info as $i => $item):
-    ?>
-      <div style="background:#0d0d0d;padding:40px 36px;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:12px;"><?php echo esc_html($item[0]); ?></div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:#fff;line-height:1.2;"><?php echo esc_html($item[1]); ?></div>
+      <div class="fform-field">
+        <input type="email" name="email" id="fem" placeholder=" " required>
+        <label for="fem">Email Address</label>
       </div>
-    <?php endforeach; ?>
-  </div>
-</section>
-
-<!-- ═══ EMAIL CAPTURE ═══ -->
-<section class="fest-capture-section" id="notify">
-  <div class="fest-capture-left fest-reveal">
-    <div class="fest-kicker">Be First to Know</div>
-    <div class="fest-capture-title">Tickets Drop<br>Before the<br>Announcement</div>
-    <p class="fest-capture-desc" style="margin-top:20px;">
-      Join the list and get early access to tickets, lineup announcements, and exclusive presale codes before anyone else.
-    </p>
-  </div>
-  <div class="fest-reveal fest-d2">
-    <form id="fest-capture-form" class="fest-capture-form" novalidate>
-      <div class="fest-input-row">
-        <input type="text" name="first_name" class="fest-input" placeholder="First name" required>
-        <input type="text" name="last_name" class="fest-input" placeholder="Last name">
+      <div class="fform-field">
+        <input type="text" name="city" id="fct" placeholder=" ">
+        <label for="fct">Your City</label>
       </div>
-      <input type="email" name="email" class="fest-input" placeholder="Email address" required>
-      <input type="text" name="city" class="fest-input" placeholder="Your city">
       <!-- Honeypot -->
       <input type="text" name="website" style="display:none;position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">
-      <button type="submit" class="fest-capture-submit">Notify Me →</button>
+      <button type="submit" class="fest-capture-submit">Notify Me When Tickets Drop →</button>
       <div class="fest-form-msg" role="alert"></div>
     </form>
   </div>
-</section>
-
-<!-- ═══ POWERED BY AFROBASS ═══ -->
-<div class="fest-powered-by">
-  <div class="fest-reveal">
-    <div class="fest-powered-label">Presented By</div>
-    <div class="fest-powered-logo">AFRO<span>BASS</span></div>
-  </div>
-  <p class="fest-powered-desc fest-reveal fest-d1">
-    Afrobass Music Festival is produced by Afrobass — Canada's premier Afrobeats event production company. Since 2018, we've been bringing world-class African music and culture to Canadian audiences coast to coast.
-  </p>
-  <a href="https://afrobass.com" target="_blank" rel="noopener" class="fest-powered-link fest-reveal fest-d2">
-    Visit Afrobass.com →
-  </a>
 </div>
 
 <?php get_footer(); ?>
