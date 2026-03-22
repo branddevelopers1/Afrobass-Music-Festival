@@ -23,12 +23,9 @@
 
 <div class="fest-topbar" id="fest-nav">
   <a href="<?php echo esc_url(home_url('/')); ?>" class="fest-topbar-logo">AFROBASS<span>FEST</span></a>
-  <div class="fest-topbar-social">
-    <a href="https://instagram.com/afrobass.ca" target="_blank" rel="noopener">Instagram</a>
-    <a href="https://www.tiktok.com/@afrobass" target="_blank" rel="noopener">TikTok</a>
-    <a href="https://www.youtube.com/@Afrobass" target="_blank" rel="noopener">YouTube</a>
-    <a href="https://facebook.com/afrobass.ca" target="_blank" rel="noopener">Facebook</a>
-  </div>
+  <a href="mailto:signup@afrobassfestival.com" class="fest-topbar-email">
+    signup@afrobassfestival.com
+  </a>
 </div>
 
 <style>
@@ -36,9 +33,7 @@
 .fest-topbar.fest-scrolled{background:rgba(10,6,8,0.95);backdrop-filter:blur(20px);}
 .fest-topbar-logo{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;color:#fff;text-decoration:none;text-transform:uppercase;}
 .fest-topbar-logo span{color:#FF2D8A;}
-.fest-topbar-social{display:flex;gap:24px;}
-.fest-topbar-social a{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);text-decoration:none;transition:color 0.2s;}
-.fest-topbar-social a:hover{color:#FF2D8A;}
+.fest-topbar-email{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:500;letter-spacing:1.5px;color:rgba(255,255,255,0.35);text-decoration:none;transition:color 0.2s;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:2px;}
 #fest-cursor{position:fixed;width:12px;height:12px;background:#FF2D8A;border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .3s,height .3s,background .3s,transform .15s;mix-blend-mode:screen;}
 #fest-cursor-ring{position:fixed;width:44px;height:44px;border:1.5px solid rgba(255,45,138,0.4);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:transform .14s ease-out;}
 @media(hover:none){#fest-cursor,#fest-cursor-ring{display:none;}}
@@ -51,5 +46,5 @@
 @keyframes fLoadBar{to{width:100%;}}
 #fest-loader.fest-hide{animation:fLoaderOut 0.7s 0.2s cubic-bezier(0.76,0,0.24,1) forwards;}
 @keyframes fLoaderOut{0%{clip-path:inset(0 0 0 0);}100%{clip-path:inset(0 0 100% 0);}}
-@media(max-width:768px){.fest-topbar{padding:20px 24px;}.fest-topbar-social{gap:14px;}}
+@media(max-width:768px){.fest-topbar{padding:20px 24px;}.fest-topbar-email:hover{color:#FF2D8A;border-bottom-color:rgba(255,45,138,0.4);}}
 </style>

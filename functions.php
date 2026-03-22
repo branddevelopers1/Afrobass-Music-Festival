@@ -83,7 +83,7 @@ function fest_register_acf() {
                 ['key'=>'field_fest_hero_video',    'label'=>'Hero Video (MP4)',     'name'=>'fest_hero_video',    'type'=>'file',  'return_format'=>'array', 'mime_types'=>'mp4,webm'],
                 ['key'=>'field_fest_ticket_url',    'label'=>'Ticket Purchase URL',  'name'=>'fest_ticket_url',    'type'=>'url'],
                 ['key'=>'field_fest_phone',         'label'=>'Phone',                'name'=>'fest_phone',         'type'=>'text',  'default_value'=>'416.846.6483'],
-                ['key'=>'field_fest_email',         'label'=>'Email',                'name'=>'fest_email',         'type'=>'email', 'default_value'=>'contact@afrobass.com'],
+                ['key'=>'field_fest_email',         'label'=>'Email',                'name'=>'fest_email',         'type'=>'email', 'default_value'=>'signup@afrobassfestival.com'],
                 ['key'=>'field_fest_instagram',     'label'=>'Instagram',            'name'=>'fest_instagram',     'type'=>'url'],
                 ['key'=>'field_fest_youtube',       'label'=>'YouTube',              'name'=>'fest_youtube',       'type'=>'url'],
                 ['key'=>'field_fest_tiktok',        'label'=>'TikTok',               'name'=>'fest_tiktok',        'type'=>'url'],
@@ -117,7 +117,7 @@ function fest_email_capture() {
 
     if (!$email || !is_email($email)) { wp_send_json_error('Please enter a valid email address.'); }
 
-    $to      = get_field('fest_email', 'option') ?: 'contact@afrobass.com';
+    $to      = get_field('fest_email', 'option') ?: 'signup@afrobassfestival.com';
     $subject = 'New Festival Interest — ' . $first . ' ' . $last;
     $body    = "New signup from afrobassfestival.com\n\n";
     $body   .= "Name:  {$first} {$last}\n";
