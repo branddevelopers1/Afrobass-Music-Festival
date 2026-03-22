@@ -1,0 +1,691 @@
+/* ============================================================
+   AFROBASS MUSIC FESTIVAL — MAIN STYLESHEET
+   Toronto, Canada · August 15, 2026
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,900&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,800&display=swap');
+
+/* ─── VARIABLES ─── */
+:root {
+  /* Core — locked in, colour TBD just change these 3 */
+  --accent:       #FF4500;
+  --accent-dim:   #CC3600;
+  --black:        #080808;
+  --dark:         #0d0d0d;
+  --dark2:        #111111;
+  --dark3:        #1a1a1a;
+  --white:        #ffffff;
+  --white-70:     rgba(255,255,255,0.7);
+  --white-40:     rgba(255,255,255,0.4);
+  --white-15:     rgba(255,255,255,0.15);
+  --white-07:     rgba(255,255,255,0.07);
+
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+  --font-cond:    'Barlow Condensed', sans-serif;
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 400;
+  overflow-x: hidden;
+  cursor: none;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { cursor: none; font-family: var(--font-body); }
+input, textarea, select { font-family: var(--font-body); }
+
+/* ─── CURSOR ─── */
+#fest-cursor {
+  position: fixed; width: 10px; height: 10px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 99999;
+  transform: translate(-50%,-50%);
+  transition: width 0.3s, height 0.3s, background 0.3s;
+}
+#fest-cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1px solid rgba(255,69,0,0.4); border-radius: 50%;
+  pointer-events: none; z-index: 99998;
+  transform: translate(-50%,-50%);
+  transition: width 0.3s, height 0.3s;
+}
+@media (hover: none) { #fest-cursor, #fest-cursor-ring { display: none; } }
+
+/* ─── LOADER ─── */
+#fest-loader {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--black);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 28px;
+}
+#fest-loader-logo {
+  font-family: var(--font-display);
+  font-size: 56px; letter-spacing: 6px; color: var(--white);
+  opacity: 0; animation: festFadeIn 0.5s 0.3s ease forwards;
+  text-align: center; line-height: 1;
+}
+#fest-loader-logo span { display: block; font-size: 18px; letter-spacing: 8px; color: var(--accent); margin-top: 4px; }
+#fest-loader-bar-wrap {
+  width: 160px; height: 1px;
+  background: rgba(255,255,255,0.08); overflow: hidden;
+  opacity: 0; animation: festFadeIn 0.4s 0.5s ease forwards;
+}
+#fest-loader-bar {
+  height: 100%; width: 0; background: var(--accent);
+  animation: festLoadBar 1.4s 0.6s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+@keyframes festFadeIn { to { opacity: 1; } }
+@keyframes festLoadBar { to { width: 100%; } }
+#fest-loader.fest-hide {
+  animation: festLoaderOut 0.7s 0.2s cubic-bezier(0.76,0,0.24,1) forwards;
+}
+@keyframes festLoaderOut {
+  0%   { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 0 100% 0); }
+}
+
+/* ─── NAV ─── */
+#fest-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  height: 68px; padding: 0 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.4s, border-color 0.4s;
+  border-bottom: 1px solid transparent;
+}
+#fest-nav.fest-scrolled {
+  background: rgba(8,8,8,0.93);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: var(--white-07);
+}
+.fest-nav-logo {
+  font-family: var(--font-display);
+  font-size: 22px; letter-spacing: 4px; color: var(--white);
+  text-decoration: none; display: flex; flex-direction: column; line-height: 1;
+}
+.fest-nav-logo-sub {
+  font-family: var(--font-cond);
+  font-size: 9px; font-weight: 600; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--accent); margin-top: 2px;
+}
+.fest-nav-links { display: flex; gap: 36px; }
+.fest-nav-links a {
+  font-family: var(--font-cond); font-size: 12px; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--white-40);
+  text-decoration: none; transition: color 0.2s; position: relative;
+}
+.fest-nav-links a::after {
+  content: ''; position: absolute; bottom: -3px; left: 0;
+  width: 0; height: 1px; background: var(--accent); transition: width 0.3s;
+}
+.fest-nav-links a:hover { color: var(--white); }
+.fest-nav-links a:hover::after { width: 100%; }
+.fest-nav-right { display: flex; gap: 12px; align-items: center; }
+.fest-btn-tickets {
+  font-family: var(--font-cond); font-size: 12px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  background: var(--accent); color: var(--white); border: none;
+  padding: 11px 24px; border-radius: 2px; transition: background 0.2s;
+}
+.fest-btn-tickets:hover { background: var(--accent-dim); }
+.fest-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; padding: 4px;
+}
+.fest-hamburger span { width: 22px; height: 1.5px; background: var(--white); display: block; transition: transform 0.3s, opacity 0.3s; }
+.fest-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.fest-hamburger.open span:nth-child(2) { opacity: 0; }
+.fest-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* Mobile nav */
+#fest-mobile-nav {
+  position: fixed; top: 68px; left: 0; right: 0; bottom: 0;
+  background: rgba(8,8,8,0.98); z-index: 999;
+  padding: 48px 40px; display: none; flex-direction: column; gap: 4px;
+}
+#fest-mobile-nav.open { display: flex; }
+.fest-mobile-link {
+  font-family: var(--font-display); font-size: 44px; letter-spacing: 3px;
+  color: var(--white-40); text-decoration: none; transition: color 0.2s;
+  padding: 10px 0; border-bottom: 1px solid var(--dark3);
+}
+.fest-mobile-link:hover { color: var(--white); }
+.fest-mobile-ticket {
+  margin-top: 28px;
+  font-family: var(--font-cond); font-size: 14px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  background: var(--accent); color: var(--white); border: none;
+  padding: 16px 32px; border-radius: 2px; width: fit-content;
+}
+
+/* ─── TICKER ─── */
+.fest-ticker { background: var(--accent); overflow: hidden; padding: 12px 0; }
+.fest-ticker-track {
+  display: flex; width: max-content;
+  animation: festTicker 32s linear infinite;
+}
+.fest-ticker-track:hover { animation-play-state: paused; }
+.fest-ticker-item {
+  font-family: var(--font-cond); font-size: 12px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(255,255,255,0.92); white-space: nowrap; padding: 0 36px;
+  display: flex; align-items: center; gap: 36px;
+}
+.fest-ticker-sep { color: rgba(255,255,255,0.35); font-size: 7px; }
+@keyframes festTicker { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+
+/* ─── SECTION HELPERS ─── */
+.fest-kicker {
+  font-family: var(--font-cond); font-size: 11px; font-weight: 700;
+  letter-spacing: 4px; text-transform: uppercase; color: var(--accent);
+  display: flex; align-items: center; gap: 14px; margin-bottom: 16px;
+}
+.fest-kicker::before { content: ''; width: 28px; height: 1px; background: var(--accent); }
+.fest-title {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 6vw, 80px); letter-spacing: 2px;
+  color: var(--white); line-height: 0.9; text-transform: uppercase;
+}
+.fest-view-all {
+  font-family: var(--font-cond); font-size: 11px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--white-40);
+  text-decoration: none; display: flex; align-items: center; gap: 10px;
+  transition: color 0.2s;
+}
+.fest-view-all:hover { color: var(--white); }
+.fest-view-all .arr { transition: transform 0.2s; }
+.fest-view-all:hover .arr { transform: translateX(6px); }
+
+/* ─── COVER PAGE ─── */
+.fest-cover {
+  position: relative; height: 100vh; min-height: 700px;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.fest-cover-video-wrap { position: absolute; inset: 0; overflow: hidden; }
+.fest-cover-video { width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); }
+.fest-cover-fallback {
+  position: absolute; inset: 0; background: var(--black);
+}
+.fest-cover-fallback::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 80% at 80% 20%, rgba(255,69,0,0.14) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 60% at 15% 80%, rgba(255,69,0,0.07) 0%, transparent 50%);
+}
+.fest-cover-grain {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.3; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+.fest-cover-overlay {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(8,8,8,0.6) 0%, rgba(8,8,8,0) 25%),
+    linear-gradient(to top, rgba(8,8,8,1) 0%, rgba(8,8,8,0.5) 40%, rgba(8,8,8,0) 75%);
+}
+.fest-cover-content {
+  position: relative; z-index: 2;
+  margin-top: auto; padding: 0 56px 80px;
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+.fest-cover-edition {
+  font-family: var(--font-cond); font-size: 11px; font-weight: 700;
+  letter-spacing: 5px; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 20px; display: flex; align-items: center; gap: 14px;
+  opacity: 0; animation: festUp 0.7s 2s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.fest-cover-edition::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.fest-cover-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(72px, 13vw, 180px);
+  line-height: 0.86; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--white); margin-bottom: 32px;
+  opacity: 0; animation: festUp 1s 2.2s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.fest-cover-h1 em { color: var(--accent); font-style: normal; display: block; }
+.fest-cover-meta {
+  display: flex; gap: 0; margin-bottom: 40px;
+  opacity: 0; animation: festUp 0.7s 2.4s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.fest-cover-meta-item {
+  font-family: var(--font-cond); font-size: 13px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--white-70);
+  padding-right: 20px; margin-right: 20px;
+  border-right: 1px solid var(--white-15);
+}
+.fest-cover-meta-item:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+.fest-cover-meta-item strong { color: var(--white); font-weight: 700; }
+.fest-cover-actions {
+  display: flex; gap: 14px; align-items: center;
+  opacity: 0; animation: festUp 0.7s 2.6s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.fest-btn-primary {
+  font-family: var(--font-cond); font-size: 13px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  background: var(--accent); color: var(--white); border: none;
+  padding: 17px 48px; border-radius: 2px; position: relative; overflow: hidden;
+  transition: background 0.3s;
+}
+.fest-btn-primary::after {
+  content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.1);
+  transform: translateX(-101%); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.fest-btn-primary:hover::after { transform: translateX(0); }
+.fest-btn-ghost {
+  font-family: var(--font-cond); font-size: 13px; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--white-40); background: transparent; border: none;
+  display: flex; align-items: center; gap: 10px; transition: color 0.2s;
+}
+.fest-btn-ghost:hover { color: var(--white); }
+.fest-btn-ghost .arrow-ring {
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid var(--white-15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; transition: border-color 0.2s, transform 0.3s;
+}
+.fest-btn-ghost:hover .arrow-ring { border-color: var(--white); transform: rotate(45deg); }
+
+/* scroll indicator */
+.fest-scroll-ind {
+  position: absolute; bottom: 36px; right: 56px; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  opacity: 0; animation: festUp 0.5s 3s ease forwards;
+}
+.fest-scroll-line {
+  width: 1px; height: 56px; background: var(--white-15); position: relative; overflow: hidden;
+}
+.fest-scroll-line::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 24px; background: var(--accent);
+  animation: festScrollDrop 1.8s 3.3s ease-in-out infinite;
+}
+@keyframes festScrollDrop { 0% { transform:translateY(-100%); } 100% { transform:translateY(280%); } }
+.fest-scroll-text {
+  font-family: var(--font-cond); font-size: 9px; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--white-40);
+  writing-mode: vertical-rl;
+}
+
+@keyframes festUp {
+  from { opacity: 0; transform: translateY(36px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── COUNTDOWN ─── */
+.fest-countdown-section {
+  padding: 64px 56px;
+  border-bottom: 1px solid var(--dark3);
+  display: flex; align-items: center; justify-content: space-between; gap: 40px;
+}
+.fest-countdown-label {
+  font-family: var(--font-cond); font-size: 11px; font-weight: 700;
+  letter-spacing: 4px; text-transform: uppercase; color: var(--white-40);
+  white-space: nowrap;
+}
+.fest-countdown-grid { display: flex; gap: 0; flex: 1; justify-content: flex-end; }
+.fest-cd-block {
+  text-align: center; padding: 0 40px;
+  border-right: 1px solid var(--dark3); position: relative;
+}
+.fest-cd-block:last-child { border-right: none; }
+.fest-cd-num {
+  font-family: var(--font-display); font-size: 72px; line-height: 1;
+  color: var(--white); display: block; letter-spacing: 2px;
+}
+.fest-cd-lbl {
+  font-family: var(--font-cond); font-size: 10px; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--white-40);
+  margin-top: 6px; display: block;
+}
+
+/* ─── EMAIL CAPTURE (Cover mode) ─── */
+.fest-capture-section {
+  padding: 80px 56px; background: var(--dark); border-bottom: 1px solid var(--dark3);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.fest-capture-left {}
+.fest-capture-title {
+  font-family: var(--font-display); font-size: clamp(36px,5vw,60px);
+  letter-spacing: 2px; color: var(--white); text-transform: uppercase;
+  line-height: 0.92; margin-bottom: 20px;
+}
+.fest-capture-desc {
+  font-size: 15px; font-weight: 300; color: var(--white-40);
+  line-height: 1.75; max-width: 400px;
+}
+.fest-capture-form { display: flex; flex-direction: column; gap: 16px; }
+.fest-input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.fest-input {
+  width: 100%; background: transparent; border: none;
+  border-bottom: 1px solid var(--dark3); color: var(--white);
+  font-size: 15px; font-weight: 400; padding: 14px 0; outline: none;
+  transition: border-color 0.2s; border-radius: 0;
+}
+.fest-input:focus { border-bottom-color: var(--accent); }
+.fest-input::placeholder { color: var(--white-40); }
+.fest-capture-submit {
+  font-family: var(--font-cond); font-size: 13px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  background: var(--accent); color: var(--white); border: none;
+  padding: 17px 48px; border-radius: 2px; margin-top: 8px; width: 100%;
+  transition: background 0.2s;
+}
+.fest-capture-submit:hover { background: var(--accent-dim); }
+.fest-form-msg { font-size: 13px; margin-top: 12px; display: none; }
+.fest-form-msg.success { color: #00c850; display: block; }
+.fest-form-msg.error { color: #ff4444; display: block; }
+
+/* ─── LINEUP PAGE ─── */
+.fest-lineup-hero {
+  padding: 160px 56px 80px;
+  border-bottom: 1px solid var(--dark3); position: relative; overflow: hidden;
+}
+.fest-lineup-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 85% 50%, rgba(255,69,0,0.08) 0%, transparent 60%);
+}
+.fest-artists-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2px; background: var(--dark3);
+}
+.fest-artist-card {
+  background: var(--dark); overflow: hidden; position: relative;
+  transition: background 0.3s;
+}
+.fest-artist-card:hover { background: #111; }
+.fest-artist-img-wrap {
+  height: 380px; overflow: hidden; position: relative; background: #111;
+}
+.fest-artist-img {
+  width: 100%; height: 100%; object-fit: cover; object-position: top;
+  display: block; filter: grayscale(20%);
+  transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.4s;
+}
+.fest-artist-card:hover .fest-artist-img { transform: scale(1.04); filter: grayscale(0%); }
+.fest-artist-img-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--dark2);
+}
+.fest-artist-role-badge {
+  position: absolute; top: 16px; left: 16px;
+  background: var(--accent); color: var(--white);
+  font-family: var(--font-cond); font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; padding: 5px 12px; border-radius: 1px;
+}
+.fest-artist-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(8,8,8,0.85) 0%, transparent 50%);
+}
+.fest-artist-info { padding: 24px 28px 32px; }
+.fest-artist-name {
+  font-family: var(--font-display); font-size: 28px; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--white); margin-bottom: 4px;
+}
+.fest-artist-origin {
+  font-size: 13px; font-weight: 300; color: var(--white-40); margin-bottom: 14px;
+}
+.fest-artist-bio {
+  font-size: 13px; font-weight: 300; color: var(--white-40); line-height: 1.7;
+}
+
+/* TBA Artist card */
+.fest-artist-tba {
+  background: var(--dark); display: flex; align-items: center; justify-content: center;
+  min-height: 480px; border: 1px solid var(--dark3);
+}
+.fest-tba-inner { text-align: center; }
+.fest-tba-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  border: 1px solid var(--dark3);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+}
+.fest-tba-icon svg { width: 24px; height: 24px; color: var(--white-15); }
+.fest-tba-text {
+  font-family: var(--font-display); font-size: 20px; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--white-15);
+}
+
+/* ─── TICKETS PAGE ─── */
+.fest-tickets-section { padding: 160px 56px 120px; }
+.fest-tickets-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2px; background: var(--dark3); margin-top: 64px;
+}
+.fest-ticket-tier {
+  background: var(--dark); padding: 40px 36px 48px;
+  position: relative; overflow: hidden;
+}
+.fest-ticket-tier.featured { background: #0d0d0d; }
+.fest-ticket-tier.featured::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 2px; background: var(--accent);
+}
+.fest-tier-badge {
+  font-family: var(--font-cond); font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 24px; display: block;
+}
+.fest-tier-name {
+  font-family: var(--font-display); font-size: 32px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--white); margin-bottom: 8px;
+}
+.fest-tier-price {
+  font-family: var(--font-display); font-size: 56px; letter-spacing: -1px;
+  color: var(--white); line-height: 1; margin-bottom: 4px;
+}
+.fest-tier-price span { font-family: var(--font-cond); font-size: 18px; font-weight: 300; color: var(--white-40); }
+.fest-tier-desc { font-size: 13px; font-weight: 300; color: var(--white-40); margin-bottom: 32px; line-height: 1.7; }
+.fest-tier-perks { display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px; }
+.fest-tier-perk {
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 13px; color: var(--white-70); font-weight: 400;
+}
+.fest-tier-perk-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); margin-top: 6px; flex-shrink: 0; }
+.fest-tier-btn {
+  font-family: var(--font-cond); font-size: 13px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; width: 100%;
+  padding: 16px; border-radius: 2px; border: none; transition: background 0.2s;
+}
+.fest-tier-btn-fill { background: var(--accent); color: var(--white); }
+.fest-tier-btn-fill:hover { background: var(--accent-dim); }
+.fest-tier-btn-outline { background: transparent; color: var(--white); border: 1px solid var(--dark3); }
+.fest-tier-btn-outline:hover { border-color: var(--white-40); }
+
+/* ─── SPONSORS PAGE ─── */
+.fest-sponsors-section { padding: 160px 56px 120px; }
+.fest-sponsor-tiers { display: flex; flex-direction: column; gap: 2px; margin-top: 64px; }
+.fest-sponsor-tier {
+  display: grid; grid-template-columns: 280px 1fr auto;
+  gap: 48px; align-items: center;
+  padding: 40px 48px; background: var(--dark);
+  border-bottom: 1px solid var(--dark3); transition: background 0.3s;
+}
+.fest-sponsor-tier:hover { background: #111; }
+.fest-sponsor-tier-name {
+  font-family: var(--font-display); font-size: 28px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--white);
+}
+.fest-sponsor-tier-badge {
+  font-family: var(--font-cond); font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--accent);
+  margin-top: 4px;
+}
+.fest-sponsor-benefits { font-size: 13px; font-weight: 300; color: var(--white-40); line-height: 1.8; }
+.fest-sponsor-cta-btn {
+  font-family: var(--font-cond); font-size: 12px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  background: transparent; color: var(--white);
+  border: 1px solid var(--dark3); padding: 12px 24px; border-radius: 2px;
+  white-space: nowrap; transition: border-color 0.2s;
+}
+.fest-sponsor-cta-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ─── ABOUT PAGE ─── */
+.fest-about-section {
+  display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh;
+}
+.fest-about-visual {
+  position: relative; background: #050505; overflow: hidden;
+}
+.fest-about-visual-inner { position: absolute; inset: 0; }
+.fest-about-visual-inner video { width:100%;height:100%;object-fit:cover;opacity:0.6; }
+.fest-about-visual-fallback {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 100% 80% at 50% 50%, rgba(255,69,0,0.1) 0%, transparent 60%),
+    repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,69,0,0.012) 40px, rgba(255,69,0,0.012) 41px),
+    #0a0a0a;
+}
+.fest-about-visual-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, transparent 60%, rgba(8,8,8,0.9) 100%);
+}
+.fest-about-content {
+  padding: 120px 72px 120px 80px;
+  display: flex; flex-direction: column; justify-content: center;
+  background: var(--dark); position: relative;
+}
+.fest-about-content::before {
+  content: ''; position: absolute; top:0;left:0;bottom:0;
+  width: 1px; background: var(--dark3);
+}
+.fest-about-body {
+  font-size: 16px; font-weight: 300; color: var(--white-70);
+  line-height: 1.85; margin-top: 32px; margin-bottom: 40px;
+}
+.fest-about-body strong { color: var(--white); font-weight: 600; }
+.fest-about-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--dark3); margin-top: 40px;
+}
+.fest-about-stat { background: var(--dark); padding: 24px 28px; }
+.fest-about-stat-num {
+  font-family: var(--font-display); font-size: 40px; letter-spacing: 1px;
+  color: var(--white); margin-bottom: 4px;
+}
+.fest-about-stat-num .acc { color: var(--accent); }
+.fest-about-stat-lbl {
+  font-family: var(--font-cond); font-size: 10px; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--white-40);
+}
+.fest-powered-by {
+  padding: 64px 56px; border-top: 1px solid var(--dark3);
+  display: flex; align-items: center; justify-content: space-between; gap: 40px;
+  background: var(--dark);
+}
+.fest-powered-label {
+  font-family: var(--font-cond); font-size: 10px; font-weight: 700;
+  letter-spacing: 4px; text-transform: uppercase; color: var(--white-40); margin-bottom: 12px;
+}
+.fest-powered-logo {
+  font-family: var(--font-display); font-size: 28px; letter-spacing: 4px; color: var(--white);
+}
+.fest-powered-logo span { color: var(--accent); }
+.fest-powered-desc { font-size: 14px; font-weight: 300; color: var(--white-40); line-height: 1.7; max-width: 360px; }
+.fest-powered-link {
+  font-family: var(--font-cond); font-size: 12px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--accent);
+  text-decoration: none; border-bottom: 1px solid rgba(255,69,0,0.3);
+  padding-bottom: 2px; white-space: nowrap; transition: border-color 0.2s;
+}
+.fest-powered-link:hover { border-color: var(--accent); }
+
+/* ─── FOOTER ─── */
+.fest-footer { background: #040404; border-top: 1px solid #0d0d0d; padding: 48px 56px 32px; }
+.fest-footer-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding-bottom: 40px; border-bottom: 1px solid var(--dark3); margin-bottom: 28px;
+  gap: 48px;
+}
+.fest-footer-brand {}
+.fest-footer-logo {
+  font-family: var(--font-display); font-size: 24px; letter-spacing: 4px; color: var(--white);
+  margin-bottom: 4px;
+}
+.fest-footer-logo span { color: var(--accent); }
+.fest-footer-sub {
+  font-family: var(--font-cond); font-size: 10px; font-weight: 600;
+  letter-spacing: 4px; text-transform: uppercase; color: var(--white-40);
+}
+.fest-footer-links { display: flex; gap: 48px; }
+.fest-footer-col h4 {
+  font-family: var(--font-cond); font-size: 10px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--white-40);
+  margin-bottom: 20px;
+}
+.fest-footer-col a {
+  display: block; font-size: 13px; font-weight: 300; color: var(--white-40);
+  text-decoration: none; margin-bottom: 12px; transition: color 0.2s;
+}
+.fest-footer-col a:hover { color: var(--white); }
+.fest-footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.fest-footer-copy { font-size: 11px; color: rgba(255,255,255,0.15); }
+.fest-footer-socials { display: flex; gap: 8px; }
+.fest-social-link {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--dark3);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white-40); text-decoration: none;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.fest-social-link svg { width: 15px; height: 15px; }
+.fest-social-link:hover { color: var(--white); border-color: var(--accent); background: rgba(255,69,0,0.1); }
+
+/* ─── REVEAL ─── */
+.fest-reveal {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.fest-reveal.visible { opacity: 1; transform: translateY(0); }
+.fest-d1 { transition-delay: 0.1s; }
+.fest-d2 { transition-delay: 0.2s; }
+.fest-d3 { transition-delay: 0.3s; }
+.fest-d4 { transition-delay: 0.4s; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .fest-artists-grid { grid-template-columns: 1fr 1fr; }
+  .fest-tickets-grid { grid-template-columns: 1fr; }
+  .fest-sponsor-tier { grid-template-columns: 1fr; gap: 20px; }
+  .fest-about-section { grid-template-columns: 1fr; }
+  .fest-about-visual { min-height: 400px; position: relative; }
+  .fest-capture-section { grid-template-columns: 1fr; gap: 48px; }
+  .fest-countdown-section { flex-direction: column; gap: 24px; }
+  .fest-powered-by { flex-direction: column; gap: 24px; }
+}
+@media (max-width: 768px) {
+  #fest-nav { padding: 0 24px; }
+  .fest-nav-links { display: none; }
+  .fest-nav-right { display: none; }
+  .fest-hamburger { display: flex; }
+  .fest-cover-content { padding: 0 24px 64px; }
+  .fest-cover-h1 { font-size: clamp(56px, 15vw, 100px); }
+  .fest-cover-meta { flex-direction: column; gap: 8px; }
+  .fest-cover-meta-item { border-right: none; padding-right: 0; margin-right: 0; }
+  .fest-countdown-section { padding: 40px 24px; }
+  .fest-cd-num { font-size: 48px; }
+  .fest-cd-block { padding: 0 20px; }
+  .fest-capture-section { padding: 60px 24px; }
+  .fest-input-row { grid-template-columns: 1fr; }
+  .fest-lineup-hero { padding: 120px 24px 60px; }
+  .fest-artists-grid { grid-template-columns: 1fr; }
+  .fest-tickets-section { padding: 120px 24px 80px; }
+  .fest-sponsors-section { padding: 120px 24px 80px; }
+  .fest-about-content { padding: 60px 32px; }
+  .fest-footer { padding: 40px 24px 24px; }
+  .fest-footer-top { flex-direction: column; }
+  .fest-footer-links { flex-direction: column; gap: 32px; }
+  .fest-footer-bottom { flex-direction: column; gap: 16px; }
+}
