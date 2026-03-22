@@ -16,9 +16,9 @@ add_action('after_setup_theme', 'fest_setup');
 
 /* ─── ENQUEUE ─── */
 function fest_enqueue() {
-    wp_enqueue_style('fest-main', get_template_directory_uri() . '/assets/css/main.css', [], '2.0.0');
-    wp_enqueue_style('fest-style', get_stylesheet_uri(), ['fest-main'], '2.0.0');
-    wp_enqueue_script('fest-main', get_template_directory_uri() . '/assets/js/main.js', [], '2.0.0', true);
+    wp_enqueue_style('fest-main', get_template_directory_uri() . '/assets/css/main.css', [], '3.0.0');
+    wp_enqueue_style('fest-style', get_stylesheet_uri(), ['fest-main'], '3.0.0');
+    wp_enqueue_script('fest-main', get_template_directory_uri() . '/assets/js/main.js', [], '3.0.0', true);
     wp_localize_script('fest-main', 'festAjax', [
         'ajaxurl' => admin_url('admin-ajax.php'),
         'nonce'   => wp_create_nonce('fest_nonce'),
@@ -113,7 +113,7 @@ function fest_email_capture() {
     $first = sanitize_text_field($_POST['first_name'] ?? '');
     $last  = sanitize_text_field($_POST['last_name']  ?? '');
     $email = sanitize_email($_POST['email']           ?? '');
-    $city  = sanitize_text_field($_POST['city']       ?? '');
+    $phone = sanitize_text_field($_POST['phone']      ?? '');
 
     if (!$email || !is_email($email)) { wp_send_json_error('Please enter a valid email address.'); }
 
@@ -122,7 +122,7 @@ function fest_email_capture() {
     $body    = "New signup from afrobassfestival.com\n\n";
     $body   .= "Name:  {$first} {$last}\n";
     $body   .= "Email: {$email}\n";
-    $body   .= "City:  {$city}\n";
+    $body   .= "Phone: {$phone}\n";
 
     $headers = [
         'Content-Type: text/plain; charset=UTF-8',
@@ -133,7 +133,7 @@ function fest_email_capture() {
     $subscribers = get_option('fest_subscribers', []);
     $subscribers[] = [
         'first' => $first, 'last' => $last,
-        'email' => $email, 'city' => $city,
+        'email' => $email, 'phone' => $phone,
         'date'  => current_time('mysql'),
     ];
     update_option('fest_subscribers', $subscribers);
@@ -151,9 +151,9 @@ function fest_export_subscribers() {
     $subs = get_option('fest_subscribers', []);
     header('Content-Type: text/csv');
     header('Content-Disposition: attachment; filename="fest-subscribers.csv"');
-    echo "First,Last,Email,City,Date\n";
+    echo "First,Last,Email,Phone,Date\n";
     foreach ($subs as $s) {
-        echo implode(',', array_map('esc_html', [$s['first'],$s['last'],$s['email'],$s['city'],$s['date']])) . "\n";
+        echo implode(',', array_map('esc_html', [$s['first'],$s['last'],$s['email'],$s['phone'] ?? '',$s['date']])) . "\n";
     }
     exit;
 }

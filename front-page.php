@@ -28,7 +28,7 @@ $ticket_url = fest_setting('fest_ticket_url') ?: '#notify';
     </defs>
     <text fill="rgba(255,255,255,0.5)" font-family="'Space Grotesk',sans-serif" font-size="13" font-weight="500" letter-spacing="8">
       <textPath href="#fcp">
-        AFROBASS MUSIC FESTIVAL · TORONTO 2026 · AUGUST 15 · REBEL ENTERTAINMENT COMPLEX · AFROBEATS · AMAPIANO · AFRO-CARIBBEAN ·
+        AFROBASS MUSIC FESTIVAL · TORONTO 2026 · AUGUST 15 · AFROBEATS · AMAPIANO · AFRO-CARIBBEAN · TORONTO CANADA ·
       </textPath>
     </text>
   </svg>
@@ -118,8 +118,8 @@ $ticket_url = fest_setting('fest_ticket_url') ?: '#notify';
         <label for="fem">Email Address</label>
       </div>
       <div class="fform-field">
-        <input type="text" name="city" id="fct" placeholder=" ">
-        <label for="fct">Your City</label>
+        <input type="tel" name="phone" id="fph" placeholder=" ">
+        <label for="fph">Phone Number <span style="color:rgba(255,255,255,0.25);font-size:9px;">(optional)</span></label>
       </div>
       <!-- Honeypot -->
       <input type="text" name="website" style="display:none;position:absolute;left:-9999px;" tabindex="-1" autocomplete="off">

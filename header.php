@@ -26,7 +26,8 @@
   <div class="fest-topbar-social">
     <a href="https://instagram.com/afrobass.ca" target="_blank" rel="noopener">Instagram</a>
     <a href="https://www.tiktok.com/@afrobass" target="_blank" rel="noopener">TikTok</a>
-    <a href="https://x.com/afrobassca" target="_blank" rel="noopener">X</a>
+    <a href="https://www.youtube.com/@Afrobass" target="_blank" rel="noopener">YouTube</a>
+    <a href="https://facebook.com/afrobass.ca" target="_blank" rel="noopener">Facebook</a>
   </div>
 </div>
 
