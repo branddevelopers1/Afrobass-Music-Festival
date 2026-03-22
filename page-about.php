@@ -59,21 +59,21 @@ $hero_video = fest_setting('fest_hero_video') ? get_field('fest_hero_video', 'op
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
       <div class="fest-reveal">
         <div class="fest-kicker">The Venue</div>
-        <h2 class="fest-title" style="margin-bottom:24px;">Rebel Entertainment<br>Complex</h2>
+        <h2 class="fest-title" style="margin-bottom:24px;">Venue<br>TBA</h2>
         <p style="font-size:15px;font-weight:300;color:rgba(255,255,255,0.4);line-height:1.8;margin-bottom:24px;">
-          One of Toronto's most iconic live music and event venues. Located at 11 Polson Street on the waterfront, Rebel is known for world-class sound, lighting, and atmosphere — the perfect home for Afrobass Music Festival's inaugural edition.
+          A world-class live music and event venue in Toronto — the perfect home for Afrobass Music Festival's inaugural edition. More details coming soon.
         </p>
         <p style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);">
-          11 Polson Street · Toronto, ON
+          Toronto, Ontario, Canada
         </p>
       </div>
       <div class="fest-reveal fest-d2" style="background:#0d0d0d;padding:40px;border:1px solid #1a1a1a;">
         <div style="display:flex;flex-direction:column;gap:0;">
           <?php
           $venue_facts = [
-            ['Venue', 'Rebel Entertainment Complex'],
-            ['Address', '11 Polson Street, Toronto, ON'],
-            ['Capacity', '1,500+ Attendees'],
+            ['Venue', 'Toronto, Canada (TBA)'],
+            ['City', 'Toronto, Ontario, Canada'],
+            ['Capacity', 'TBA'],
             ['Date', 'Saturday, August 15, 2026'],
             ['Time', 'Doors Open TBA'],
           ];

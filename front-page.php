@@ -45,8 +45,6 @@ $ticket_url = fest_setting('fest_ticket_url') ?: '#notify';
     <div class="fmeta">
       <div class="fpill"><div class="fpill-dot" style="background:#FF6B1A;"></div><span>August 15, 2026</span></div>
       <div class="fpill"><div class="fpill-dot" style="background:#FF2D8A;"></div><span>Toronto, Canada</span></div>
-      <div class="fpill"><div class="fpill-dot" style="background:#FFD23F;"></div><span>Rebel Entertainment Complex</span></div>
-      <div class="fpill"><div class="fpill-dot" style="background:#6B2FBF;"></div><span>1,500+ Attendees</span></div>
     </div>
 
     <div class="factions">
@@ -74,8 +72,6 @@ $ticket_url = fest_setting('fest_ticket_url') ?: '#notify';
     <div class="fti hot">Afro-Caribbean <div class="ftdot"></div></div>
     <div class="fti">Toronto 2026 <div class="ftdot"></div></div>
     <div class="fti hot">August 15 <div class="ftdot"></div></div>
-    <div class="fti">Rebel Entertainment Complex <div class="ftdot"></div></div>
-    <div class="fti hot">1,500+ Attendees <div class="ftdot"></div></div>
     <div class="fti">First Edition <div class="ftdot"></div></div>
     <div class="fti hot">International Artists <div class="ftdot"></div></div>
     <div class="fti">Live DJs <div class="ftdot"></div></div>

@@ -16,9 +16,9 @@ add_action('after_setup_theme', 'fest_setup');
 
 /* ─── ENQUEUE ─── */
 function fest_enqueue() {
-    wp_enqueue_style('fest-main', get_template_directory_uri() . '/assets/css/main.css', [], '1.0.0');
-    wp_enqueue_style('fest-style', get_stylesheet_uri(), ['fest-main'], '1.0.0');
-    wp_enqueue_script('fest-main', get_template_directory_uri() . '/assets/js/main.js', [], '1.0.0', true);
+    wp_enqueue_style('fest-main', get_template_directory_uri() . '/assets/css/main.css', [], '2.0.0');
+    wp_enqueue_style('fest-style', get_stylesheet_uri(), ['fest-main'], '2.0.0');
+    wp_enqueue_script('fest-main', get_template_directory_uri() . '/assets/js/main.js', [], '2.0.0', true);
     wp_localize_script('fest-main', 'festAjax', [
         'ajaxurl' => admin_url('admin-ajax.php'),
         'nonce'   => wp_create_nonce('fest_nonce'),
@@ -211,6 +211,170 @@ function fest_social_icons(): array {
 
 function fest_flush() { flush_rewrite_rules(); }
 add_action('after_switch_theme', 'fest_flush');
+
+/* ── FAVICON ── */
+function fest_favicon() {
+    $favicon = get_template_directory_uri() . '/assets/images/favicon.png';
+    echo '<link rel="icon" type="image/png" href="' . esc_url($favicon) . '">' . "\n";
+    echo '<link rel="shortcut icon" href="' . esc_url($favicon) . '">' . "\n";
+    echo '<link rel="apple-touch-icon" href="' . esc_url($favicon) . '">' . "\n";
+}
+add_action('wp_head', 'fest_favicon', 1);
+
+/* ── SEO — META, OG, TWITTER, SCHEMA ── */
+function fest_seo_meta() {
+    $site_name   = 'Afrobass Music Festival';
+    $title       = 'Afrobass Music Festival — Toronto 2026 | August 15';
+    $description = 'The first edition of Afrobass Music Festival. Toronto, Canada. August 15, 2026. Celebrating Afrobeats, Amapiano, and Afro-Caribbean music. Be the first to know.';
+    $url         = home_url('/');
+    $og_img      = get_template_directory_uri() . '/assets/images/og-image.jpg';
+    $ticket_url  = fest_setting('fest_ticket_url') ?: home_url('/tickets');
+
+    // Per-page overrides
+    if (is_page('lineup')) {
+        $title       = 'Lineup — Afrobass Music Festival Toronto 2026';
+        $description = 'Meet the artists performing at Afrobass Music Festival. International Afrobeats, Amapiano, and Afro-Caribbean artists live in Toronto. August 15, 2026.';
+        $url         = get_permalink();
+    } elseif (is_page('tickets')) {
+        $title       = 'Tickets — Afrobass Music Festival Toronto 2026';
+        $description = 'Get your tickets for Afrobass Music Festival. General Admission, VIP, and Table packages available. Toronto, August 15, 2026.';
+        $url         = get_permalink();
+    } elseif (is_page('sponsors')) {
+        $title       = 'Sponsorship — Afrobass Music Festival Toronto 2026';
+        $description = 'Partner with Afrobass Music Festival 2026. Sponsorship packages available — Platinum, Gold, Silver, Bronze, and In-Kind. Reach thousands of Afrobeats fans in Toronto.';
+        $url         = get_permalink();
+    } elseif (is_page('about') || is_page('the-festival')) {
+        $title       = 'About — Afrobass Music Festival Toronto 2026';
+        $description = 'Afrobass Music Festival is a live music and cultural event in Toronto celebrating Afrobeats, Amapiano, and Afro-Caribbean music. First edition: August 15, 2026.';
+        $url         = get_permalink();
+    }
+
+    $description = esc_attr(wp_strip_all_tags($description));
+    $title_esc   = esc_attr($title);
+    $url_esc     = esc_url($url);
+    $og_img_esc  = esc_url($og_img);
+    ?>
+
+    <!-- SEO Core -->
+    <meta name="description" content="<?php echo $description; ?>">
+    <meta name="keywords" content="Afrobass Music Festival, Afrobeats Toronto, Amapiano Toronto, African music festival Toronto, Afro-Caribbean festival, Toronto music festival 2026, Toronto music event">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Afrobass Inc.">
+    <link rel="canonical" href="<?php echo $url_esc; ?>">
+
+    <!-- Open Graph -->
+    <meta property="og:type"         content="website">
+    <meta property="og:site_name"    content="<?php echo esc_attr($site_name); ?>">
+    <meta property="og:title"        content="<?php echo $title_esc; ?>">
+    <meta property="og:description"  content="<?php echo $description; ?>">
+    <meta property="og:url"          content="<?php echo $url_esc; ?>">
+    <meta property="og:image"        content="<?php echo $og_img_esc; ?>">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt"    content="Afrobass Music Festival — Toronto 2026">
+    <meta property="og:locale"       content="en_CA">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:site"        content="@afrobassca">
+    <meta name="twitter:title"       content="<?php echo $title_esc; ?>">
+    <meta name="twitter:description" content="<?php echo $description; ?>">
+    <meta name="twitter:image"       content="<?php echo $og_img_esc; ?>">
+
+    <!-- Local / Geo SEO -->
+    <meta name="geo.region"      content="CA-ON">
+    <meta name="geo.placename"   content="Toronto, Ontario, Canada">
+    <meta name="geo.position"    content="43.6532;-79.3832">
+    <meta name="ICBM"            content="43.6532, -79.3832">
+
+    <!-- Structured Data — Event -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MusicEvent",
+      "name": "Afrobass Music Festival 2026",
+      "description": "<?php echo esc_js($description); ?>",
+      "startDate": "2026-08-15T20:00:00-04:00",
+      "endDate": "2026-08-16T03:00:00-04:00",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "image": "<?php echo esc_js($og_img); ?>",
+      "url": "<?php echo esc_js(home_url('/')); ?>",
+      "location": {
+        "@type": "Place",
+        "name": "Toronto music event",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Toronto",
+          "addressLocality": "Toronto",
+          "addressRegion": "ON",
+          
+          "addressCountry": "CA"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 43.6532,
+          "longitude": -79.3832
+        }
+      },
+      "organizer": {
+        "@type": "Organization",
+        "name": "Afrobass Inc.",
+        "url": "https://afrobass.com",
+        "sameAs": [
+          "https://instagram.com/afrobass.ca",
+          "https://www.youtube.com/@Afrobass",
+          "https://www.tiktok.com/@afrobass",
+          "https://facebook.com/afrobass.ca",
+          "https://x.com/afrobassca"
+        ]
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "<?php echo esc_js($ticket_url); ?>",
+        "availability": "https://schema.org/InStock",
+        "validFrom": "2026-01-01",
+        "priceCurrency": "CAD"
+      },
+      "performer": {
+        "@type": "PerformingGroup",
+        "name": "International Afrobeats & Amapiano Artists"
+      },
+      "typicalAgeRange": "19+",
+      
+      "inLanguage": "en"
+    }
+    </script>
+
+    <!-- Structured Data — Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Afrobass Inc.",
+      "url": "https://afrobass.com",
+      "logo": "<?php echo esc_js(get_template_directory_uri() . '/assets/images/favicon.png'); ?>",
+      "description": "Canada's premier Afrobeats event production company. Concerts, tours, and live events across Canada since 2018.",
+      "foundingDate": "2018",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Toronto",
+        "addressRegion": "ON",
+        "addressCountry": "CA"
+      },
+      "sameAs": [
+        "https://instagram.com/afrobass.ca",
+        "https://www.youtube.com/@Afrobass",
+        "https://www.tiktok.com/@afrobass",
+        "https://facebook.com/afrobass.ca",
+        "https://x.com/afrobassca"
+      ]
+    }
+    </script>
+
+    <?php
+}
+add_action('wp_head', 'fest_seo_meta', 5);
 
 /* ACF missing notice */
 function fest_acf_notice() {

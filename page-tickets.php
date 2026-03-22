@@ -12,7 +12,7 @@ $ticket_url = fest_setting('fest_ticket_url') ?: '#';
       <div class="fest-kicker">Afrobass Music Festival 2026</div>
       <h1 class="fest-title">Get Your<br>Tickets</h1>
       <p style="font-size:16px;font-weight:300;color:rgba(255,255,255,0.4);margin-top:20px;max-width:480px;line-height:1.7;">
-        Saturday, August 15, 2026 · Rebel Entertainment Complex · Toronto, Canada
+        Saturday, August 15, 2026 · Toronto, Canada
       </p>
     </div>
 

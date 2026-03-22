@@ -4,10 +4,6 @@
 <meta charset="<?php bloginfo('charset'); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0a0608">
-<meta name="description" content="The first edition of Afrobass Music Festival. Toronto, Canada. August 15, 2026. Afrobeats · Amapiano · Afro-Caribbean. Be the first to know.">
-<meta property="og:title" content="Afrobass Music Festival — Toronto 2026">
-<meta property="og:description" content="Something massive is coming to Toronto. August 15, 2026.">
-<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700;900&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
 <?php wp_head(); ?>
