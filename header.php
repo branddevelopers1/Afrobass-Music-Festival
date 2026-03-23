@@ -23,9 +23,7 @@
 
 <div class="fest-topbar" id="fest-nav">
   <a href="<?php echo esc_url(home_url('/')); ?>" class="fest-topbar-logo">AFROBASS<span>FEST</span></a>
-  <a href="mailto:signup@afrobassfestival.com" class="fest-topbar-email">
-    signup@afrobassfestival.com
-  </a>
+
 </div>
 
 <style>
