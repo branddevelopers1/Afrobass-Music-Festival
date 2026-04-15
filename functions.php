@@ -16,9 +16,9 @@ add_action('after_setup_theme', 'fest_setup');
 
 /* ─── ENQUEUE ─── */
 function fest_enqueue() {
-    wp_enqueue_style('fest-main', get_template_directory_uri() . '/assets/css/main.css', [], '3.0.0');
-    wp_enqueue_style('fest-style', get_stylesheet_uri(), ['fest-main'], '3.0.0');
-    wp_enqueue_script('fest-main', get_template_directory_uri() . '/assets/js/main.js', [], '3.0.0', true);
+    wp_enqueue_style('fest-main', get_template_directory_uri() . '/assets/css/main.css', [], '3.2.0');
+    wp_enqueue_style('fest-style', get_stylesheet_uri(), ['fest-main'], '3.2.0');
+    wp_enqueue_script('fest-main', get_template_directory_uri() . '/assets/js/main.js', [], '3.2.0', true);
     wp_localize_script('fest-main', 'festAjax', [
         'ajaxurl' => admin_url('admin-ajax.php'),
         'nonce'   => wp_create_nonce('fest_nonce'),
@@ -45,6 +45,25 @@ function fest_register_artists() {
 }
 add_action('init', 'fest_register_artists');
 
+/* ─── CUSTOM POST TYPE — SPONSORS ─── */
+function fest_register_sponsors() {
+    register_post_type('fest_sponsor', [
+        'labels' => [
+            'name'          => 'Sponsors',
+            'singular_name' => 'Sponsor',
+            'add_new_item'  => 'Add New Sponsor',
+            'menu_name'     => 'Sponsors',
+        ],
+        'public'       => true,
+        'has_archive'  => false,
+        'rewrite'      => ['slug' => 'sponsor', 'with_front' => false],
+        'supports'     => ['title', 'thumbnail'],
+        'menu_icon'    => 'dashicons-building',
+        'show_in_rest' => true,
+    ]);
+}
+add_action('init', 'fest_register_sponsors');
+
 /* ─── ACF FIELDS ─── */
 function fest_register_acf() {
     if (!function_exists('acf_add_local_field_group')) return;
@@ -54,17 +73,36 @@ function fest_register_acf() {
         'key'    => 'group_fest_artist',
         'title'  => 'Artist Details',
         'fields' => [
-            ['key'=>'field_fest_artist_role',      'label'=>'Role',         'name'=>'fest_artist_role',      'type'=>'select',
+            ['key'=>'field_fest_artist_role',        'label'=>'Role',                  'name'=>'fest_artist_role',        'type'=>'select',
              'choices'=>['Headliner'=>'Headliner','Co-Headliner'=>'Co-Headliner','Supporting Act'=>'Supporting Act','DJ Set'=>'DJ Set','Special Guest'=>'Special Guest'],
              'default_value'=>'Headliner'],
-            ['key'=>'field_fest_artist_origin',    'label'=>'Origin',       'name'=>'fest_artist_origin',    'type'=>'text', 'placeholder'=>'Lagos, Nigeria'],
-            ['key'=>'field_fest_artist_bio',       'label'=>'Short Bio',    'name'=>'fest_artist_bio',       'type'=>'textarea', 'rows'=>3],
-            ['key'=>'field_fest_artist_instagram', 'label'=>'Instagram URL','name'=>'fest_artist_instagram', 'type'=>'url'],
-            ['key'=>'field_fest_artist_spotify',   'label'=>'Spotify URL',  'name'=>'fest_artist_spotify',   'type'=>'url'],
-            ['key'=>'field_fest_artist_order',     'label'=>'Display Order','name'=>'fest_artist_order',     'type'=>'number', 'default_value'=>10],
-            ['key'=>'field_fest_artist_tba',       'label'=>'TBA (hide name/photo)','name'=>'fest_artist_tba','type'=>'true_false','default_value'=>0],
+            ['key'=>'field_fest_artist_origin',      'label'=>'Origin (City, Country)', 'name'=>'fest_artist_origin',      'type'=>'text',     'placeholder'=>'Lagos, Nigeria'],
+            ['key'=>'field_fest_artist_bio',         'label'=>'Short Bio',              'name'=>'fest_artist_bio',         'type'=>'textarea', 'rows'=>3],
+            ['key'=>'field_fest_artist_perf_time',   'label'=>'Performance Time',       'name'=>'fest_artist_perf_time',   'type'=>'text',     'placeholder'=>'e.g. 10:30 PM – 12:00 AM'],
+            ['key'=>'field_fest_artist_perf_slot',   'label'=>'Schedule Slot (Order)',  'name'=>'fest_artist_perf_slot',   'type'=>'number',   'default_value'=>1],
+            ['key'=>'field_fest_artist_instagram',   'label'=>'Instagram URL',          'name'=>'fest_artist_instagram',   'type'=>'url'],
+            ['key'=>'field_fest_artist_spotify',     'label'=>'Spotify URL',            'name'=>'fest_artist_spotify',     'type'=>'url'],
+            ['key'=>'field_fest_artist_apple_music', 'label'=>'Apple Music URL',        'name'=>'fest_artist_apple_music', 'type'=>'url'],
+            ['key'=>'field_fest_artist_order',       'label'=>'Display Order',          'name'=>'fest_artist_order',       'type'=>'number',   'default_value'=>10],
+            ['key'=>'field_fest_artist_tba',         'label'=>'TBA (hide name/photo)',  'name'=>'fest_artist_tba',         'type'=>'true_false','default_value'=>0],
         ],
         'location' => [[ ['param'=>'post_type','operator'=>'==','value'=>'fest_artist'] ]],
+    ]);
+
+    /* Sponsors */
+    acf_add_local_field_group([
+        'key'    => 'group_fest_sponsor',
+        'title'  => 'Sponsor Details',
+        'fields' => [
+            ['key'=>'field_fest_sponsor_tier',    'label'=>'Tier',         'name'=>'fest_sponsor_tier',    'type'=>'select',
+             'choices'=>['Platinum'=>'Platinum','Gold'=>'Gold','Silver'=>'Silver','Bronze'=>'Bronze','In-Kind'=>'In-Kind','Media Partner'=>'Media Partner'],
+             'default_value'=>'Gold'],
+            ['key'=>'field_fest_sponsor_url',     'label'=>'Website URL',  'name'=>'fest_sponsor_url',     'type'=>'url'],
+            ['key'=>'field_fest_sponsor_tagline', 'label'=>'Tagline',      'name'=>'fest_sponsor_tagline', 'type'=>'text', 'placeholder'=>'e.g. Official Beverage Partner'],
+            ['key'=>'field_fest_sponsor_order',   'label'=>'Display Order','name'=>'fest_sponsor_order',   'type'=>'number','default_value'=>10],
+            ['key'=>'field_fest_sponsor_visible', 'label'=>'Show on Website','name'=>'fest_sponsor_visible','type'=>'true_false','default_value'=>1],
+        ],
+        'location' => [[ ['param'=>'post_type','operator'=>'==','value'=>'fest_sponsor'] ]],
     ]);
 
     /* Homepage / Site Settings */
@@ -83,7 +121,7 @@ function fest_register_acf() {
                 ['key'=>'field_fest_hero_video',    'label'=>'Hero Video (MP4)',     'name'=>'fest_hero_video',    'type'=>'file',  'return_format'=>'array', 'mime_types'=>'mp4,webm'],
                 ['key'=>'field_fest_ticket_url',    'label'=>'Ticket Purchase URL',  'name'=>'fest_ticket_url',    'type'=>'url'],
                 ['key'=>'field_fest_phone',         'label'=>'Phone',                'name'=>'fest_phone',         'type'=>'text',  'default_value'=>'416.846.6483'],
-                ['key'=>'field_fest_email',         'label'=>'Email',                'name'=>'fest_email',         'type'=>'email', 'default_value'=>'signup@afrobassfestival.com'],
+                ['key'=>'field_fest_email',         'label'=>'Email',                'name'=>'fest_email',         'type'=>'email', 'default_value'=>'signup@afrobass.com'],
                 ['key'=>'field_fest_instagram',     'label'=>'Instagram',            'name'=>'fest_instagram',     'type'=>'url'],
                 ['key'=>'field_fest_youtube',       'label'=>'YouTube',              'name'=>'fest_youtube',       'type'=>'url'],
                 ['key'=>'field_fest_tiktok',        'label'=>'TikTok',               'name'=>'fest_tiktok',        'type'=>'url'],
@@ -117,9 +155,9 @@ function fest_email_capture() {
 
     if (!$email || !is_email($email)) { wp_send_json_error('Please enter a valid email address.'); }
 
-    $to      = get_field('fest_email', 'option') ?: 'signup@afrobassfestival.com';
+    $to      = get_field('fest_email', 'option') ?: 'signup@afrobass.com';
     $subject = 'New Festival Interest — ' . $first . ' ' . $last;
-    $body    = "New signup from afrobassfestival.com\n\n";
+    $body    = "New signup from afrobassfest.com\n\n";
     $body   .= "Name:  {$first} {$last}\n";
     $body   .= "Email: {$email}\n";
     $body   .= "Phone: {$phone}\n";
@@ -161,22 +199,172 @@ add_action('admin_init', 'fest_export_subscribers');
 
 /* ─── TEMPLATE ROUTING BY SLUG ─── */
 function fest_route_templates($template) {
-    if (!is_page()) return $template;
-    $slug = get_post_field('post_name', get_queried_object_id());
-    $map  = [
-        'lineup'       => 'page-lineup.php',
-        'tickets'      => 'page-tickets.php',
-        'sponsors'     => 'page-sponsors.php',
-        'about'        => 'page-about.php',
-        'the-festival' => 'page-about.php',
+    /* Method 1: standard page slug routing */
+    if (is_page()) {
+        $slug = get_post_field('post_name', get_queried_object_id());
+        $map  = [
+            'lineup'      => 'page-lineup.php',
+            'tickets'     => 'page-tickets.php',
+            'sponsors'    => 'page-sponsors.php',
+            'about'       => 'page-about.php',
+            'the-festival'=> 'page-about.php',
+            'schedule'    => 'page-schedule.php',
+            'timetable'   => 'page-schedule.php',
+            'contact'     => 'page-contact.php',
+            'faq'         => 'page-faq.php',
+            'submissions' => 'page-submissions.php',
+            'apply'       => 'page-submissions.php',
+            'signup'      => 'page-signup.php',
+            'notify'      => 'page-signup.php',
+        ];
+        if (isset($map[$slug])) {
+            $located = locate_template($map[$slug]);
+            if ($located) return $located;
+        }
+    }
+
+    /* Method 2: URL path fallback — works even if WP page doesn't exist */
+    $path = trim(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH), '/');
+    /* Strip trailing slash segments and query strings */
+    $segment = strtok(basename($path), '?');
+    $url_map = [
+        'lineup'      => 'page-lineup.php',
+        'tickets'     => 'page-tickets.php',
+        'sponsors'    => 'page-sponsors.php',
+        'about'       => 'page-about.php',
+        'schedule'    => 'page-schedule.php',
+        'timetable'   => 'page-schedule.php',
+        'contact'     => 'page-contact.php',
+        'faq'         => 'page-faq.php',
+        'submissions' => 'page-submissions.php',
+        'apply'       => 'page-submissions.php',
+        'signup'      => 'page-signup.php',
+        'notify'      => 'page-signup.php',
     ];
-    if (isset($map[$slug])) {
-        $located = locate_template($map[$slug]);
+    if (isset($url_map[$segment])) {
+        $located = locate_template($url_map[$segment]);
         if ($located) return $located;
     }
+
     return $template;
 }
 add_filter('template_include', 'fest_route_templates', 99);
+
+/* ─── CONTACT FORM AJAX ─── */
+function fest_contact_form() {
+    check_ajax_referer('fest_nonce', 'nonce');
+    if (!empty($_POST['website'])) { wp_send_json_error('Submission rejected.'); }
+
+    $ip    = sanitize_text_field($_SERVER['REMOTE_ADDR'] ?? '');
+    $key   = 'fest_contact_rate_' . md5($ip);
+    $count = (int) get_transient($key);
+    if ($count >= 5) { wp_send_json_error('Too many messages. Please try again later.'); }
+    set_transient($key, $count + 1, HOUR_IN_SECONDS);
+
+    $first   = sanitize_text_field($_POST['first_name'] ?? '');
+    $last    = sanitize_text_field($_POST['last_name']  ?? '');
+    $email   = sanitize_email($_POST['email']           ?? '');
+    $phone   = sanitize_text_field($_POST['phone']      ?? '');
+    $subject = sanitize_text_field($_POST['subject']    ?? 'General');
+    $message = sanitize_textarea_field($_POST['message'] ?? '');
+
+    if (!$first || !$email || !is_email($email)) {
+        wp_send_json_error('Please fill in all required fields.');
+    }
+
+    $to      = fest_setting('fest_email') ?: 'contact@afrobassfest.com';
+    $subj    = "[{$subject}] {$first} {$last} — Afrobass Fest 2026";
+    $body    = "New contact form submission\n\nName:    {$first} {$last}\nEmail:   {$email}\nPhone:   {$phone}\nTopic:   {$subject}\n\nMessage:\n{$message}\n";
+    $headers = ['Content-Type: text/plain; charset=UTF-8', 'Reply-To: ' . $first . ' ' . $last . ' <' . $email . '>'];
+
+    wp_mail($to, $subj, $body, $headers);
+    wp_send_json_success("Thanks {$first}! We've received your message and will get back to you shortly.");
+}
+add_action('wp_ajax_fest_contact_form',        'fest_contact_form');
+add_action('wp_ajax_nopriv_fest_contact_form', 'fest_contact_form');
+
+
+function fest_handle_submission() {
+    check_ajax_referer('fest_nonce', 'nonce');
+    if (!empty($_POST['website'])) { wp_send_json_error('Submission rejected.'); }
+
+    $ip    = sanitize_text_field($_SERVER['REMOTE_ADDR'] ?? '');
+    $key   = 'fest_sub_rate_' . md5($ip);
+    $count = (int) get_transient($key);
+    if ($count >= 3) { wp_send_json_error('Too many submissions. Please try again later.'); }
+    set_transient($key, $count + 1, HOUR_IN_SECONDS);
+
+    $type    = sanitize_text_field($_POST['submission_type'] ?? '');
+    $name    = sanitize_text_field($_POST['full_name']       ?? '');
+    $email   = sanitize_email($_POST['email']                ?? '');
+    $phone   = sanitize_text_field($_POST['phone']           ?? '');
+    $message = sanitize_textarea_field($_POST['message']     ?? '');
+
+    // Type-specific fields
+    $extras = [];
+    if ($type === 'artist') {
+        $extras['Stage Name']       = sanitize_text_field($_POST['stage_name']  ?? '');
+        $extras['Genre']            = sanitize_text_field($_POST['genre']        ?? '');
+        $extras['Instagram']        = esc_url_raw($_POST['instagram']            ?? '');
+        $extras['Spotify/Music URL']= esc_url_raw($_POST['music_url']           ?? '');
+        $extras['EPK/Bio URL']      = esc_url_raw($_POST['epk_url']             ?? '');
+    } elseif ($type === 'vendor') {
+        $extras['Business Name']    = sanitize_text_field($_POST['business_name'] ?? '');
+        $extras['Vendor Type']      = sanitize_text_field($_POST['vendor_type']   ?? '');
+        $extras['Website']          = esc_url_raw($_POST['vendor_website']        ?? '');
+        $extras['Instagram']        = esc_url_raw($_POST['instagram']             ?? '');
+    } elseif ($type === 'volunteer') {
+        $extras['Availability']     = sanitize_text_field($_POST['availability']  ?? '');
+        $extras['Skills/Experience']= sanitize_textarea_field($_POST['skills']    ?? '');
+    }
+
+    if (!$name || !$email || !is_email($email)) {
+        wp_send_json_error('Please fill in all required fields with a valid email.');
+    }
+
+    $to      = fest_setting('fest_email') ?: 'contact@afrobassfest.com';
+    $subject = '[' . ucfirst($type) . ' Submission] ' . $name . ' — Afrobass Fest 2026';
+    $body    = "New {$type} submission from afrobassfest.com\n\n";
+    $body   .= "Name:    {$name}\n";
+    $body   .= "Email:   {$email}\n";
+    $body   .= "Phone:   {$phone}\n";
+    foreach ($extras as $label => $val) {
+        if ($val) $body .= "{$label}: {$val}\n";
+    }
+    $body .= "\nMessage:\n{$message}\n";
+
+    $headers = [
+        'Content-Type: text/plain; charset=UTF-8',
+        'Reply-To: ' . $name . ' <' . $email . '>',
+    ];
+
+    // Store in WP options
+    $subs   = get_option('fest_submissions', []);
+    $subs[] = array_merge(['type'=>$type,'name'=>$name,'email'=>$email,'phone'=>$phone,'date'=>current_time('mysql'),'message'=>$message], $extras);
+    update_option('fest_submissions', $subs);
+
+    wp_mail($to, $subject, $body, $headers);
+    wp_send_json_success("Thank you, {$name}! We've received your submission and will be in touch.");
+}
+add_action('wp_ajax_fest_submission',        'fest_handle_submission');
+add_action('wp_ajax_nopriv_fest_submission', 'fest_handle_submission');
+
+/* ─── SUBMISSIONS EXPORT (admin) ─── */
+function fest_export_submissions() {
+    if (!current_user_can('manage_options')) return;
+    if (empty($_GET['fest_export_subs'])) return;
+    $subs = get_option('fest_submissions', []);
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename="fest-submissions.csv"');
+    echo "Type,Name,Email,Phone,Date,Message\n";
+    foreach ($subs as $s) {
+        $row = array($s['type']??'',$s['name']??'',$s['email']??'',$s['phone']??'',$s['date']??'',$s['message']??'');
+        $quoted = array_map(function($v){ return '"' . str_replace('"','""',$v) . '"'; }, $row);
+        echo implode(',', $quoted) . "\n";
+    }
+    exit;
+}
+add_action('admin_init', 'fest_export_submissions');
 
 /* ─── HELPERS ─── */
 function fest_setting(string $key): string {
@@ -187,7 +375,7 @@ function fest_setting(string $key): string {
 function fest_social_icons(): array {
     return [
         'instagram' => [
-            'url' => fest_setting('fest_instagram') ?: 'https://instagram.com/afrobass.ca',
+            'url' => fest_setting('fest_instagram') ?: 'https://instagram.com/afrobassfest',
             'svg' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>',
         ],
         'youtube' => [
@@ -235,6 +423,10 @@ function fest_seo_meta() {
         $title       = 'Lineup — Afrobass Music Festival Toronto 2026';
         $description = 'Meet the artists performing at Afrobass Music Festival. International Afrobeats, Amapiano, and Afro-Caribbean artists live in Toronto. August 15, 2026.';
         $url         = get_permalink();
+    } elseif (is_page('schedule') || is_page('timetable')) {
+        $title       = 'Schedule — Afrobass Music Festival Toronto 2026';
+        $description = "Full performance schedule and timetable for Afrobass Music Festival. See who's playing and when. Toronto, August 15, 2026.";
+        $url         = get_permalink();
     } elseif (is_page('tickets')) {
         $title       = 'Tickets — Afrobass Music Festival Toronto 2026';
         $description = 'Get your tickets for Afrobass Music Festival. General Admission, VIP, and Table packages available. Toronto, August 15, 2026.';
@@ -246,6 +438,22 @@ function fest_seo_meta() {
     } elseif (is_page('about') || is_page('the-festival')) {
         $title       = 'About — Afrobass Music Festival Toronto 2026';
         $description = 'Afrobass Music Festival is a live music and cultural event in Toronto celebrating Afrobeats, Amapiano, and Afro-Caribbean music. First edition: August 15, 2026.';
+        $url         = get_permalink();
+    } elseif (is_page('contact')) {
+        $title       = 'Contact — Afrobass Music Festival Toronto 2026';
+        $description = 'Get in touch with the Afrobass Music Festival team. General enquiries, press, sponsorship, and more.';
+        $url         = get_permalink();
+    } elseif (is_page('faq')) {
+        $title       = 'FAQ — Afrobass Music Festival Toronto 2026';
+        $description = 'Frequently asked questions about Afrobass Music Festival Toronto 2026. Tickets, venue, artists, and everything you need to know.';
+        $url         = get_permalink();
+    } elseif (is_page('submissions') || is_page('apply')) {
+        $title       = 'Apply — Artists, Vendors & Volunteers | Afrobass Music Festival 2026';
+        $description = 'Apply to perform, vend, or volunteer at Afrobass Music Festival Toronto 2026. Submit your application today.';
+        $url         = get_permalink();
+    } elseif (is_page('signup') || is_page('notify')) {
+        $title       = 'Join the List — Afrobass Music Festival Toronto 2026';
+        $description = 'Sign up for early access to Afrobass Music Festival tickets. Be the first to know about lineup announcements, presales, and exclusive updates.';
         $url         = get_permalink();
     }
 
@@ -302,27 +510,28 @@ function fest_seo_meta() {
       "url": "<?php echo esc_js(home_url('/')); ?>",
       "location": {
         "@type": "Place",
-        "name": "Toronto music event",
+        "name": "Rebel Entertainment Complex",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Toronto",
+          "streetAddress": "11 Polson St",
           "addressLocality": "Toronto",
           "addressRegion": "ON",
-          
+          "postalCode": "M5A 1A4",
           "addressCountry": "CA"
         },
         "geo": {
           "@type": "GeoCoordinates",
-          "latitude": 43.6532,
-          "longitude": -79.3832
-        }
+          "latitude": 43.6413,
+          "longitude": -79.3572
+        },
+        "maximumAttendeeCapacity": 3000
       },
       "organizer": {
         "@type": "Organization",
         "name": "Afrobass Inc.",
         "url": "https://afrobass.com",
         "sameAs": [
-          "https://instagram.com/afrobass.ca",
+          "https://instagram.com/afrobassfest",
           "https://www.youtube.com/@Afrobass",
           "https://www.tiktok.com/@afrobass",
           "https://facebook.com/afrobass.ca",
@@ -363,7 +572,7 @@ function fest_seo_meta() {
         "addressCountry": "CA"
       },
       "sameAs": [
-        "https://instagram.com/afrobass.ca",
+        "https://instagram.com/afrobassfest",
         "https://www.youtube.com/@Afrobass",
         "https://www.tiktok.com/@afrobass",
         "https://facebook.com/afrobass.ca",
