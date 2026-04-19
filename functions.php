@@ -591,3 +591,10 @@ function fest_acf_notice() {
     echo '<div class="notice notice-warning is-dismissible"><p><strong>Afrobass Festival Theme:</strong> Please install <a href="https://wordpress.org/plugins/advanced-custom-fields/" target="_blank">Advanced Custom Fields</a> to enable all features.</p></div>';
 }
 add_action('admin_notices', 'fest_acf_notice');
+
+/* ── FAVICON ──────────────────────────────────────────────── */
+function fest_favicon() {
+    if ( has_site_icon() ) return; // WordPress Customizer icon takes priority
+    echo '<link rel="icon" href="' . esc_url( get_template_directory_uri() . '/favicon.svg' ) . '" type="image/svg+xml">' . "\n";
+}
+add_action('wp_head', 'fest_favicon', 1);
