@@ -402,10 +402,8 @@ add_action('after_switch_theme', 'fest_flush');
 
 /* ── FAVICON ── */
 function fest_favicon() {
-    $favicon = get_template_directory_uri() . '/assets/images/favicon.png';
-    echo '<link rel="icon" type="image/png" href="' . esc_url($favicon) . '">' . "\n";
-    echo '<link rel="shortcut icon" href="' . esc_url($favicon) . '">' . "\n";
-    echo '<link rel="apple-touch-icon" href="' . esc_url($favicon) . '">' . "\n";
+    if ( has_site_icon() ) return; // WordPress Customizer icon takes priority
+    echo '<link rel="icon" href="' . esc_url( get_template_directory_uri() . '/favicon.svg' ) . '" type="image/svg+xml">' . "\n";
 }
 add_action('wp_head', 'fest_favicon', 1);
 
@@ -591,10 +589,3 @@ function fest_acf_notice() {
     echo '<div class="notice notice-warning is-dismissible"><p><strong>Afrobass Festival Theme:</strong> Please install <a href="https://wordpress.org/plugins/advanced-custom-fields/" target="_blank">Advanced Custom Fields</a> to enable all features.</p></div>';
 }
 add_action('admin_notices', 'fest_acf_notice');
-
-/* ── FAVICON ──────────────────────────────────────────────── */
-function fest_favicon() {
-    if ( has_site_icon() ) return; // WordPress Customizer icon takes priority
-    echo '<link rel="icon" href="' . esc_url( get_template_directory_uri() . '/favicon.svg' ) . '" type="image/svg+xml">' . "\n";
-}
-add_action('wp_head', 'fest_favicon', 1);
